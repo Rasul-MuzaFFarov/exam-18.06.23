@@ -1,4 +1,5 @@
 ﻿using Domain.Dtos.Employee;
+using Domain.Dtos.Employee.Customer;
 using Domain.Entities;
 using Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
@@ -33,11 +34,11 @@ public class CustomerServices
         return await _context.Customers.FindAsync(id);
     }
     
-    public async Task<Customer> AddCustomer(Customer Customer)
+    public async Task<Customer> AddCustomer(Customer customer)
     {
-        await _context.Customers.AddAsync(Customer); 
+        await _context.Customers.AddAsync(customer); 
         await _context.SaveChangesAsync();
-        return Customer;
+        return customer;
         
     }
 
@@ -46,4 +47,20 @@ public class CustomerServices
         
         return await _context.Customers.FindAsync(id);
     }
+
+    public Customer UpdateCustomer(Customer customer)
+    {
+        _context.Customers.Update(customer);
+        _context.SaveChanges();
+        return customer;
+    }
+
+    public bool DeleteCustomer(int id)
+    {
+        var book =  _context.Customers.Find(id);
+        _context.Customers.Remove(book);
+        var result =  _context.SaveChanges();
+        return result == 1;
+    }
 }
+
